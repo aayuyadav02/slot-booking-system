@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slot Booking App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<h1>Slot Booking App</h1>
+
+<form id="bookForm">
+
+    <div>
+        <label>Select Date:</label>
+        <input type="date" id="date" required>
+    </div>
+
+    <div>
+        <label>Select Time Slot:</label>
+        <input type="time" id="timeSlot" required>
+    </div>
+
+    <div>
+        <label>Game Name:</label>
+        <input type="text" id="gameName" placeholder="Enter Game Name" required>
+    </div>
+
+    <button type="submit">Book Slot</button>
+
+</form>
+
+<h2>Bookings</h2>
+
+<div id="bookingsContainer"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
