@@ -11,6 +11,8 @@
 
 <form id="bookForm">
 
+<form id="bookForm">
+
     <div>
         <label>Select Date:</label>
         <input type="date" id="date" required>
@@ -21,12 +23,16 @@
         <input type="time" id="timeSlot" required>
     </div>
 
-    <div>
-        <label>Game Name:</label>
-        <input type="text" id="gameName" placeholder="Enter Game Name" required>
+    <div id="gameSelection" style="display: none;">
+        <label>Select Game:</label>
+        <select id="gameSelect" name="gameSelect">
+            <option value="">Select a game</option>
+        </select>
     </div>
 
-    <button type="submit">Book Slot</button>
+    <button type="submit" id="actionButton">Check Available Games</button>
+
+</form>
 
 </form>
 

@@ -11,70 +11,70 @@ function handleBookFormSubmit(event) {
 
     event.preventDefault();
 
-    const date =
-        document.getElementById('date').value;
+    const button = document.getElementById('actionButton');
+    const date = document.getElementById('date').value;
+    const timeSlot = document.getElementById('timeSlot').value;
 
-    const timeSlot =
-        document.getElementById('timeSlot').value;
-
-    const gameName =
-        document.getElementById('gameName').value;
-
-    if (!date || !timeSlot || !gameName) {
-
-        alert('Please fill all fields');
-
+    if (!date || !timeSlot) {
+        alert('Please fill date and time slot');
         return;
     }
 
-    fetch(
-        `/api/bookings/check?bookingDate=${date}&timeSlot=${timeSlot}&gameName=${gameName}`
-    )
-
-    .then(response => response.json())
-
-    .then(isBooked => {
-
-        if (isBooked) {
-
-            alert('Slot already booked!');
-
-        } else {
-
-            fetch('/api/bookings', {
-
-                method: 'POST',
-
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-
-                body: JSON.stringify({
-
-                    gameName: gameName,
-                    bookingDate: date,
-                    timeSlot: timeSlot
-
-                })
+    if (button.textContent === 'Check Available Games') {
+        // Fetch available games
+        fetch(`/api/games/available?bookingDate=${date}&timeSlot=${timeSlot}`)
+            .then(response => response.json())
+            .then(games => {
+                const gameSelect = document.getElementById('gameSelect');
+                gameSelect.innerHTML = '<option value="">Select a game</option>';
+                games.forEach(game => {
+                    const option = document.createElement('option');
+                    option.value = game.gameName;
+                    option.textContent = game.gameName;
+                    gameSelect.appendChild(option);
+                });
+                document.getElementById('gameSelection').style.display = 'block';
+                button.textContent = 'Book Slot';
             })
-
-            .then(() => {
-
-                alert('Booking Successful');
-
-                loadBookings();
-
-                document.getElementById('bookForm').reset();
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong fetching games');
             });
+    } else {
+        // Book the slot
+        const gameName = document.getElementById('gameSelect').value;
+        if (!gameName) {
+            alert('Please select a game');
+            return;
         }
-    })
 
-    .catch(error => {
+        fetch('/api/bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                gameName: gameName,
+                bookingDate: date,
+                timeSlot: timeSlot
+            })
+        })
+        .then(() => {
+            alert('Booking Successful');
+            loadBookings();
+            resetForm();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong');
+        });
+    }
+}
 
-        console.error('Error:', error);
-
-        alert('Something went wrong');
-    });
+function resetForm() {
+    document.getElementById('bookForm').reset();
+    document.getElementById('gameSelection').style.display = 'none';
+    document.getElementById('actionButton').textContent = 'Check Available Games';
 }
 
 function loadBookings() {
