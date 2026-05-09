@@ -1,46 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Slot Booking App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSlot | Game Booking</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Optional: Adding a Google Font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<h1>Slot Booking App</h1>
+<div class="app-container">
+    <header>
+        <h1>🎮 ProSlot Manager</h1>
+        <p>Reserve your spot on the field</p>
+    </header>
 
-<form id="bookForm">
+    <main class="dashboard">
+        <!-- Booking Section -->
+        <section class="form-section">
+            <div class="card">
+                <h2>New Booking</h2>
+                <form id="bookForm">
+                    <div class="input-group">
+                        <label for="date">Select Date</label>
+                        <input type="date" id="date" required>
+                    </div>
 
-<form id="bookForm">
+                    <div class="input-group">
+                        <label for="timeSlot">Select Time</label>
+                        <input type="time" id="timeSlot" required>
+                    </div>
 
-    <div>
-        <label>Select Date:</label>
-        <input type="date" id="date" required>
-    </div>
+                    <div id="gameSelection" class="input-group animate-in" style="display: none;">
+                        <label for="gameSelect">Available Games</label>
+                        <select id="gameSelect" name="gameSelect">
+                            <option value="">Choose a game...</option>
+                        </select>
+                    </div>
 
-    <div>
-        <label>Select Time Slot:</label>
-        <input type="time" id="timeSlot" required>
-    </div>
+                    <p id="formMessage" class="message"></p>
 
-    <div id="gameSelection" style="display: none;">
-        <label>Select Game:</label>
-        <select id="gameSelect" name="gameSelect">
-            <option value="">Select a game</option>
-        </select>
-    </div>
+                    <button type="submit" id="actionButton" class="btn-primary">
+                        Check Available Games
+                    </button>
+                </form>
+            </div>
+        </section>
 
-    <button type="submit" id="actionButton">Check Available Games</button>
-
-</form>
-
-</form>
-
-<h2>Bookings</h2>
-
-<div id="bookingsContainer"></div>
+        <!-- Display Section -->
+        <section class="display-section">
+            <h2>Current Bookings</h2>
+            <div id="bookingsContainer" class="bookings-grid">
+                <!-- Data injected here -->
+            </div>
+        </section>
+    </main>
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
