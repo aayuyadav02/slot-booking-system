@@ -43,6 +43,11 @@ public class BookingController {
         return bookingService.getAllBookings();
     }
 
+    @DeleteMapping("/bookings/{id}")
+    public void deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+    }
+
     @GetMapping("/bookings/check")
     public boolean checkBooking(
             @RequestParam String bookingDate,
