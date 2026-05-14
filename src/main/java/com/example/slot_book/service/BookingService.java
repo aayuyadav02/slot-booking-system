@@ -1,5 +1,7 @@
 package com.example.slot_book.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,14 +72,41 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    // Get all bookings
+    // Get all current and future bookings only
     public List<Booking> getAllBookings() {
+        LocalDate today = LocalDate.now();
 
-        return bookingRepository.findAll();
+        return bookingRepository.findAll().stream()
+                .filter(booking -> !isPastBooking(booking.getBookingDate(), today))
+                .collect(Collectors.toList());
+    }
+
+    // Delete past bookings from the database
+    public void deletePastBookings() {
+        LocalDate today = LocalDate.now();
+
+        List<Booking> expiredBookings = bookingRepository.findAll().stream()
+                .filter(booking -> isPastBooking(booking.getBookingDate(), today))
+                .collect(Collectors.toList());
+
+        bookingRepository.deleteAll(expiredBookings);
     }
 
     // Delete a booking by id
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
+    }
+
+    private boolean isPastBooking(String bookingDate, LocalDate today) {
+        if (bookingDate == null || bookingDate.isBlank()) {
+            return false;
+        }
+
+        try {
+            LocalDate bookingLocalDate = LocalDate.parse(bookingDate);
+            return bookingLocalDate.isBefore(today);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }

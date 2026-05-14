@@ -5,8 +5,15 @@ const gameSelect = document.getElementById('gameSelect');
 const actionButton = document.getElementById('actionButton');
 const bookForm = document.getElementById('bookForm');
 const formMessage = document.getElementById('formMessage');
+const userBadge = document.getElementById('userBadge');
+const bookingsContainer = document.getElementById('bookingsContainer');
+const adminLinkContainer = document.getElementById('adminLinkContainer');
+const managerActions = document.getElementById('managerActions');
+const deletePastButton = document.getElementById('deletePastButton');
+const managerActionMessage = document.getElementById('managerActionMessage');
 
 let hasLoadedAvailableGames = false;
+let currentRole = null;
 
 function showMessage(message, type = 'info') {
     if (!formMessage) {
@@ -142,11 +149,54 @@ function loadBookings() {
                     <p><strong>📅 Date:</strong> ${booking.bookingDate}</p>
                     <p><strong>⏰ Time:</strong> ${booking.timeSlot}</p>
                 `;
+
+                if (currentRole === 'MANAGER') {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete Booking';
+                    deleteBtn.className = 'btn-primary';
+                    deleteBtn.style.marginTop = '12px';
+                    deleteBtn.addEventListener('click', () => deleteBooking(booking.id));
+                    div.appendChild(deleteBtn);
+                }
+
                 bookingsContainer.appendChild(div);
             });
         })
         .catch(error => {
             console.error('Load Booking Error:', error);
+        });
+}
+
+function deleteBooking(id) {
+    fetch(`/api/bookings/${id}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete booking.');
+            }
+            loadBookings();
+        })
+        .catch(error => {
+            console.error('Delete Booking Error:', error);
+            showMessage('Unable to delete booking.', 'error');
+        });
+}
+
+function handleDeletePastBookings() {
+    fetch('/api/bookings/past', { method: 'DELETE' })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete past bookings.');
+            }
+            managerActionMessage.textContent = 'Past bookings deleted successfully.';
+            managerActionMessage.className = 'message message-success';
+            loadBookings();
+        })
+        .catch(error => {
+            console.error('Delete Past Bookings Error:', error);
+            managerActionMessage.textContent = 'Unable to delete past bookings.';
+            managerActionMessage.className = 'message message-error';
         });
 }
 
@@ -166,7 +216,47 @@ function initialize() {
         }
     });
 
-    loadBookings();
+    fetchUserInfo();
+}
+
+function fetchUserInfo() {
+    fetch('/api/auth/me')
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '/login.html';
+                return;
+            }
+            return response.json();
+        })
+        .then(user => {
+            if (!user) {
+                return;
+            }
+
+            currentRole = user.role;
+            userBadge.textContent = `${user.username} (${user.role})`;
+
+            if (currentRole === 'MANAGER' || currentRole === 'ADMIN') {
+                loadBookings();
+            } else {
+                bookingsContainer.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #94a3b8;">
+                        <p>Your current role is <strong>${user.role}</strong>. Booking overview is available for managers only.</p>
+                    </div>`;
+            }
+
+            if (currentRole === 'MANAGER' && managerActions) {
+                managerActions.style.display = 'block';
+                deletePastButton.addEventListener('click', handleDeletePastBookings);
+            }
+
+            if (currentRole === 'ADMIN' && adminLinkContainer) {
+                adminLinkContainer.style.display = 'inline-flex';
+            }
+        })
+        .catch(() => {
+            window.location.href = '/login.html';
+        });
 }
 
 initialize();

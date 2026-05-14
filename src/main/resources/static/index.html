@@ -12,8 +12,15 @@
 
 <div class="app-container">
     <header>
-        <h1>🎮 ProSlot Manager</h1>
-        <p>Reserve your spot on the field</p>
+        <div>
+            <h1>🎮 ProSlot Manager</h1>
+            <p>Reserve your spot on the field</p>
+        </div>
+        <div class="header-actions">
+            <span id="adminLinkContainer" style="display: none;"><a id="adminLink" href="/admin.html">Admin Panel</a></span>
+            <span id="userBadge"></span>
+            <a href="/logout">Logout</a>
+        </div>
     </header>
 
     <main class="dashboard">
@@ -45,6 +52,15 @@
                         Check Available Games
                     </button>
                 </form>
+            </div>
+        </section>
+
+        <!-- Manager Actions -->
+        <section id="managerActions" class="form-section" style="display: none;">
+            <div class="card">
+                <h2>Manager Tools</h2>
+                <button id="deletePastButton" class="btn-primary">Delete Past Bookings</button>
+                <p id="managerActionMessage" class="message"></p>
             </div>
         </section>
 

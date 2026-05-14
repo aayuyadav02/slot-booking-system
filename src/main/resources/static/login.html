@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSlot Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Welcome back</h1>
+        <p>Sign in to book your game slot or manage bookings.</p>
+        <form action="/login" method="post">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+            <p class="message" id="loginMessage"></p>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register</a></p>
+    </div>
+</div>
+<script>
+    const loginMessage = document.getElementById('loginMessage');
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('error')) {
+        loginMessage.textContent = 'Login failed. Check username and password.';
+        loginMessage.className = 'message message-error';
+    }
+
+    if (params.has('logout')) {
+        loginMessage.textContent = 'You have logged out successfully.';
+        loginMessage.className = 'message message-success';
+    }
+
+    if (params.has('registered')) {
+        loginMessage.textContent = 'Registration complete. Please sign in.';
+        loginMessage.className = 'message message-success';
+    }
+</script>
+</body>
+</html>

@@ -23,12 +23,67 @@ body {
 header {
     text-align: center;
     margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-actions a {
+    color: white;
+    background: var(--primary);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 600;
 }
 
 header h1 {
     font-size: 2.5rem;
     margin-bottom: 5px;
     color: var(--primary);
+}
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: var(--bg-body);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card-bg);
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.auth-card h1 {
+    margin-bottom: 12px;
+}
+
+.auth-card p {
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.auth-card form .input-group {
+    margin-bottom: 18px;
+}
+
+.auth-card .message {
+    margin-top: 12px;
 }
 
 .dashboard {

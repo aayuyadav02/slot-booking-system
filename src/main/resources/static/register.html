@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSlot Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Create account</h1>
+        <p>Register to book games and access the ProSlot system.</p>
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+            </div>
+            <button class="btn-primary" type="submit">Register</button>
+            <p class="message" id="registerMessage"></p>
+        </form>
+        <p>Already have an account? <a href="login.html">Sign in</a></p>
+    </div>
+</div>
+<script>
+    const registerForm = document.getElementById('registerForm');
+    const registerMessage = document.getElementById('registerMessage');
+
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        registerMessage.textContent = '';
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!username || !password) {
+            registerMessage.textContent = 'Please enter both username and password.';
+            registerMessage.className = 'message message-error';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                registerMessage.textContent = data || 'Registration failed.';
+                registerMessage.className = 'message message-error';
+                return;
+            }
+
+            window.location.href = '/login.html?registered';
+        } catch (error) {
+            registerMessage.textContent = 'Unable to register at this time.';
+            registerMessage.className = 'message message-error';
+        }
+    });
+</script>
+</body>
+</html>

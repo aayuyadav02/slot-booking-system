@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSlot Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-container">
+    <header>
+        <div>
+            <h1>Admin Panel</h1>
+            <p>Manage manager accounts for ProSlot.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/">Home</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section class="form-section">
+            <div class="card">
+                <h2>Create Manager</h2>
+                <form id="createManagerForm">
+                    <div class="input-group">
+                        <label for="managerUsername">Username</label>
+                        <input id="managerUsername" name="username" type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="managerPassword">Password</label>
+                        <input id="managerPassword" name="password" type="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Create Manager</button>
+                    <p class="message" id="managerMessage"></p>
+                </form>
+            </div>
+        </section>
+
+        <section class="display-section">
+            <h2>Managers</h2>
+            <div id="managersContainer" class="bookings-grid"></div>
+        </section>
+    </main>
+</div>
+<script src="admin.js"></script>
+</body>
+</html>
